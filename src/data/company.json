@@ -1,0 +1,75 @@
+{
+  "name": "НМА",
+  "legalName": "ООО «НефтеМонтажАвтоматика»",
+  "fullName": "НефтеМонтажАвтоматика",
+  "site": "https://nmaus.ru",
+  "phone": "88214452052",
+  "phoneDisplay": "8 (82144) 52-0-52",
+  "phoneTel": "+78214452052",
+  "whatsapp": "78214452052",
+  "email": "info@nmaus.ru",
+  "legalAddress": {
+    "postalCode": "141402",
+    "addressRegion": "Московская обл.",
+    "addressLocality": "г. Химки",
+    "streetAddress": "ш. Вашутинское, д. 17, пом. 101А"
+  },
+  "workAddress": {
+    "postalCode": "169710",
+    "addressRegion": "Республика Коми",
+    "addressLocality": "г. Усинск",
+    "streetAddress": "ул. Ленина, 9, оф. 23"
+  },
+  "inn": "1106028181",
+  "ogrn": "1111106001588",
+  "kpp": "504701001",
+  "founded": "2011",
+  "rating": {
+    "value": "4.9",
+    "count": "94"
+  },
+  "license": {
+    "mchs": "Л014-00101-50/04678717",
+    "mchsDate": "31.03.2026",
+    "mchsRegNumber": "50-06-2026-001222",
+    "mchsDesc": "Монтаж, ТО и ремонт систем пожарной и охранно-пожарной сигнализации, автоматических систем передачи извещений о пожаре"
+  },
+  "sro": {
+    "construction": {
+      "name": "АС «Национальный альянс строителей»",
+      "number": "СРО-С-246-13062012",
+      "memberNumber": "170123/113",
+      "joined": "17.01.2023"
+    },
+    "design": {
+      "name": "«Национальный альянс проектировщиков «ГлавПроект»",
+      "number": "СРО-П-174-01102012",
+      "memberNumber": "П-174-001106028181-0855",
+      "joined": "01.10.2014"
+    }
+  },
+  "electricLab": "до 35 кВ",
+  "electricLabCerts": [
+    {
+      "number": "№5.3-6358",
+      "date": "14.02.2024",
+      "type": "передвижная",
+      "validUntil": "15.02.2027",
+      "maxVoltage": "до 35 кВ"
+    },
+    {
+      "number": "№5.3-6424",
+      "date": "15.05.2024",
+      "type": "стационарная",
+      "maxVoltage": "до 35 кВ"
+    }
+  ],
+  "verification": {
+    "yandex": "",
+    "google": ""
+  },
+  "social": {
+    "facebook": "",
+    "twitter": ""
+  }
+}

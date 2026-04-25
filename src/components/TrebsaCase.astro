@@ -1,0 +1,96 @@
+---
+---
+<section class="trebsa-case" aria-labelledby="trebsa-title">
+  <span class="section-label">Кейс</span>
+  <h2 id="trebsa-title" class="section-title">Башнефть-Полюс: <em style="font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">месторождение им. Р. Требса и А. Титова</em></h2>
+  <p class="section-sub">Крупнейший объект НМА: комплексное строительство объектов энергоснабжения одного из крупнейших нефтяных месторождений России в НАО.</p>
+
+  <div class="trebsa-grid">
+    <div class="trebsa-fact">
+      <div class="trebsa-num">~1,5 млрд</div>
+      <div class="trebsa-label">₽ объём работ</div>
+    </div>
+    <div class="trebsa-fact">
+      <div class="trebsa-num">2021–2025</div>
+      <div class="trebsa-label">годы реализации</div>
+    </div>
+    <div class="trebsa-fact">
+      <div class="trebsa-num">НАО</div>
+      <div class="trebsa-label">Республика Коми / НАО</div>
+    </div>
+  </div>
+
+  <div class="trebsa-list">
+    <div class="trebsa-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>Строительство подстанции ПС-35/10 кВ под ключ</span>
+    </div>
+    <div class="trebsa-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>Строительство ВЛ-35кВ протяжённостью 42 км</span>
+    </div>
+    <div class="trebsa-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>Строительство ВЛ-10кВ — внутрипромысловые сети</span>
+    </div>
+    <div class="trebsa-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>КТП 6/0,4 кВ — электроснабжение объектов промысла</span>
+    </div>
+    <div class="trebsa-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>АСУТП объектов энергоснабжения</span>
+    </div>
+    <div class="trebsa-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>ПНР, испытания электролаборатории, сдача Ростехнадзору</span>
+    </div>
+  </div>
+
+  <div class="trebsa-client">
+    <span class="trebsa-client-label">Заказчик</span>
+    <span class="trebsa-client-name">ООО «Башнефть-Полюс»</span>
+  </div>
+</section>
+
+<style>
+.trebsa-case{padding:32px 16px}
+.trebsa-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin:20px 0 16px;
+}
+.trebsa-fact{
+  background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(123,97,255,.08));
+  border:1px solid rgba(0,212,255,.2);
+  border-radius:14px;padding:14px 10px;text-align:center;
+}
+.trebsa-num{
+  font-size:18px;font-weight:800;letter-spacing:-.02em;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.trebsa-label{font-size:11px;color:var(--text-mute);margin-top:4px;line-height:1.3}
+.trebsa-list{display:grid;gap:8px;margin-bottom:16px}
+.trebsa-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border-radius:10px;
+  background:var(--surface);border:1px solid var(--border);
+  font-size:14px;color:var(--text);
+}
+.trebsa-item svg{width:16px;height:16px;color:var(--success);flex-shrink:0;margin-top:2px}
+.trebsa-client{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 16px;border-radius:12px;
+  background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);
+}
+.trebsa-client-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.trebsa-client-name{font-size:15px;font-weight:700;color:var(--text)}
+@media(min-width:640px){
+  .trebsa-grid{gap:12px}
+  .trebsa-num{font-size:22px}
+}
+@media(min-width:900px){
+  .trebsa-case{padding:56px 32px;max-width:1100px;margin:0 auto}
+  .trebsa-list{grid-template-columns:1fr 1fr}
+}
+</style>

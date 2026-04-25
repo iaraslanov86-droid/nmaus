@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import HeroBackdrop from '../../../components/HeroBackdrop.astro';
+import company from '../../../data/company.json';
+import regions from '../../../data/regions.json';
+import cities from '../../../data/cities.json';
+import services from '../../../data/services.json';
+
+export async function getStaticPaths() {
+  return Object.entries(cities as Record<string, any>).map(([cityKey, city]) => ({
+    params: { city: cityKey },
+    props: { city, region: (regions as any)[city.region] }
+  }));
+}
+
+const { city, region } = Astro.props;
+const canonical = `${company.site}/gorod/${city.slug}/`;
+const serviceList = Object.values(services as Record<string, any>);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${company.site}/#org`,
+      name: company.legalName,
+      url: `${company.site}/`,
+      telephone: company.phone,
+      email: company.email
+    },
+    {
+      '@type': 'LocalBusiness',
+      '@id': `${canonical}#business`,
+      name: `${company.name} — ${city.name}`,
+      url: canonical,
+      telephone: company.phone,
+      email: company.email,
+      priceRange: '₽₽',
+      parentOrganization: { '@id': `${company.site}/#org` },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: city.name,
+        addressRegion: region.nameFull,
+        addressCountry: 'RU'
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: city.coords[0], longitude: city.coords[1] },
+      areaServed: [
+        { '@type': 'City', name: city.name },
+        { '@type': 'AdministrativeArea', name: region.nameFull }
+      ],
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+        opens: '00:00',
+        closes: '23:59'
+      }
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Главная', item: `${company.site}/` },
+        { '@type': 'ListItem', position: 2, name: region.name, item: `${company.site}/${region.slug}/` },
+        { '@type': 'ListItem', position: 3, name: city.name, item: canonical }
+      ]
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={`${company.name} в ${city.namePrepositional} — строительство объектов нефтегаза`}
+  description={`${company.legalName} в ${city.namePrepositional}: строительство ВЛ и ЛЭП, РУ и ПС, нефтепроводов, АСУТП, ПНР, электрообогрев, изоляция, ОПС. ${city.heroNote || ''}`}
+  canonical={canonical}
+  geo={{ region: region.iso, placename: `${city.name}, ${region.nameFull}`, lat: city.coords[0], lon: city.coords[1] }}
+  jsonLd={jsonLd}
+>
+
+<nav class="crumbs" aria-label="Хлебные крошки">
+  <a href="/">Главная</a>
+  <span class="sep">›</span>
+  <a href={`/${region.slug}/`}>{region.name}</a>
+  <span class="sep">›</span>
+  <span aria-current="page">{city.name}</span>
+</nav>
+
+<main>
+
+<section class="hero hero-featured" aria-labelledby="hero-title">
+  <HeroBackdrop />
+  <div class="hero-badge">{city.name} · {region.name}</div>
+  <h1 id="hero-title">{company.name} в <em>{city.namePrepositional}</em></h1>
+  <p class="hero-sub">{city.heroNote || `${company.legalName} выполняет строительство и монтаж объектов нефтегазового комплекса в ${city.namePrepositional}.`}</p>
+
+  <div class="trust-strip">
+    <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>СРО строительство</span>
+    <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Лицензия МЧС</span>
+    <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Опыт с 2011 года</span>
+  </div>
+
+  <div class="cta-group">
+    <a href={`tel:${company.phoneTel}`} class="btn btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+      {company.phoneDisplay}
+    </a>
+  </div>
+</section>
+
+<section aria-labelledby="services-title">
+  <span class="section-label">Услуги в {city.namePrepositional}</span>
+  <h2 id="services-title" class="section-title">Что делает НМА в {city.namePrepositional}</h2>
+  <div class="services">
+    {serviceList.map(svc => (
+      <a href={`/${region.slug}/${svc.slug}/${city.slug}/`} class="svc" style="color:inherit;text-decoration:none;display:block">
+        <h3>{svc.title}</h3>
+        <p>{svc.tagline}</p>
+        <span class="svc-tag">в {city.namePrepositional} →</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+{city.localClients && city.localClients.length > 0 && (
+  <section aria-labelledby="clients-title">
+    <span class="section-label">Заказчики</span>
+    <h2 id="clients-title" class="section-title">Крупные операторы в {city.namePrepositional}</h2>
+    <div class="local-clients">
+      {city.localClients.map((c: string) => (
+        <div class="local-client">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>{c}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+{city.localFaq && city.localFaq.length > 0 && (
+  <section aria-labelledby="faq-title">
+    <span class="section-label">FAQ</span>
+    <h2 id="faq-title" class="section-title">Вопросы о работе НМА в {city.namePrepositional}</h2>
+    <div class="faq">
+      {city.localFaq.map((f: any) => (
+        <details class="qa">
+          <summary>{f.q}</summary>
+          <div class="qa-body">{f.a}</div>
+        </details>
+      ))}
+    </div>
+  </section>
+)}
+
+<section id="contact" aria-labelledby="contact-title">
+  <span class="section-label">Контакты</span>
+  <h2 id="contact-title" class="section-title">{company.name} в {city.namePrepositional}</h2>
+  <div class="contact-card">
+    <h3>{company.name} · {city.name}</h3>
+    <div class="contact-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+      <div><a href={`tel:${company.phoneTel}`}>{company.phoneDisplay}</a><small>Круглосуточно</small></div>
+    </div>
+    <div class="contact-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <div><a href={`mailto:${company.email}`}>{company.email}</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+</BaseLayout>

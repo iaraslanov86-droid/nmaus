@@ -1,0 +1,30 @@
+---
+// Лёгкая декоративная подложка для hero на внутренних страницах.
+// Без анимации (585 страниц × анимация = лишняя нагрузка).
+// Только градиентное свечение + сетка.
+---
+<div class="hero-backdrop" aria-hidden="true">
+  <svg viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="hbGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+        <path d="M48 0H0V48" fill="none" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+      </pattern>
+      <radialGradient id="hbGlowA" cx="0.18" cy="0.28" r="0.55">
+        <stop offset="0%" stop-color="rgba(0,212,255,0.18)"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+      <radialGradient id="hbGlowB" cx="0.85" cy="0.75" r="0.55">
+        <stop offset="0%" stop-color="rgba(123,97,255,0.16)"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+      <radialGradient id="hbGlowC" cx="0.55" cy="0.95" r="0.4">
+        <stop offset="0%" stop-color="rgba(255,138,61,0.10)"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hbGlowA)"/>
+    <rect width="100%" height="100%" fill="url(#hbGlowB)"/>
+    <rect width="100%" height="100%" fill="url(#hbGlowC)"/>
+    <rect width="100%" height="100%" fill="url(#hbGrid)"/>
+  </svg>
+</div>

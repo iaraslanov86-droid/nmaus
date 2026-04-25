@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroBackdrop from '../../components/HeroBackdrop.astro';
+import company from '../../data/company.json';
+import regions from '../../data/regions.json';
+import cities from '../../data/cities.json';
+import services from '../../data/services.json';
+
+export async function getStaticPaths() {
+  return Object.entries(regions).map(([regionKey, region]) => ({
+    params: { region: regionKey },
+    props: { region }
+  }));
+}
+
+const { region } = Astro.props;
+const canonical = `${company.site}/${region.slug}/`;
+const serviceList = Object.values(services);
+const regionCities = region.cities.map((c: string) => cities[c]).filter(Boolean);
+
+const regionFaq = (region as any).faq || [];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${company.site}/#org`,
+      name: company.legalName,
+      alternateName: company.name,
+      url: `${company.site}/`,
+      telephone: company.phone,
+      email: company.email,
+      foundingDate: company.founded,
+      address: { '@type': 'PostalAddress', ...company.legalAddress },
+      location: { '@type': 'PostalAddress', ...company.workAddress },
+      identifier: [
+        { '@type': 'PropertyValue', name: 'ИНН', value: company.inn },
+        { '@type': 'PropertyValue', name: 'ОГРН', value: company.ogrn }
+      ],
+      hasCredential: [
+        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'СРО строительство', name: company.sro.construction.name, identifier: company.sro.construction.number },
+        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'СРО проектирование', name: company.sro.design.name, identifier: company.sro.design.number },
+        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Лицензия МЧС', identifier: company.license.mchs }
+      ],
+      contactPoint: { '@type': 'ContactPoint', telephone: company.phone, contactType: 'customer service', areaServed: 'RU', availableLanguage: 'ru' },
+      areaServed: { '@type': 'AdministrativeArea', name: region.nameFull }
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Главная', item: `${company.site}/` },
+        { '@type': 'ListItem', position: 2, name: region.name, item: canonical }
+      ]
+    },
+    ...(regionFaq.length > 0 ? [{
+      '@type': 'FAQPage',
+      mainEntity: regionFaq.map((f: any) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a }
+      }))
+    }] : [])
+  ]
+};
+---
+
+<BaseLayout
+  title={`${company.name} в ${region.namePrepositional} — строительство объектов нефтегаза`}
+  description={`${company.legalName} работает в ${region.namePrepositional}: строительство ВЛ и ЛЭП, РУ и ПС, нефтепроводов, АСУТП, ПНР, электрообогрев, изоляция, ОПС. Города: ${regionCities.map((c: any) => c.name).join(', ')}.`}
+  canonical={canonical}
+  geo={{ region: region.iso }}
+  jsonLd={jsonLd}
+>
+
+<nav class="crumbs" aria-label="Хлебные крошки">
+  <a href="/">Главная</a>
+  <span class="sep">›</span>
+  <span aria-current="page">{region.name}</span>
+</nav>
+
+<main>
+
+<section class="hero hero-featured" aria-labelledby="hero-title">
+  <HeroBackdrop />
+  <div class="hero-badge">{region.nameFull}</div>
+  <h1 id="hero-title">{company.name} в <em>{region.namePrepositional}</em></h1>
+  <p class="hero-sub">{region.description} {company.legalName} выполняет строительство и монтаж объектов нефтегазового комплекса в {region.namePrepositional} с 2011 года.</p>
+
+  <div class="trust-strip">
+    <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>СРО строительство</span>
+    <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Лицензия МЧС</span>
+    <span class="trust-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Опыт с 2011 года</span>
+  </div>
+
+  <div class="cta-group">
+    <a href={`tel:${company.phoneTel}`} class="btn btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+      {company.phoneDisplay}
+    </a>
+  </div>
+</section>
+
+<section aria-labelledby="services-title">
+  <span class="section-label">Услуги в {region.namePrepositional}</span>
+  <h2 id="services-title" class="section-title">Виды работ НМА в {region.namePrepositional}</h2>
+  <div class="services">
+    {serviceList.map(svc => (
+      <a href={`/${region.slug}/${svc.slug}/`} class="svc" style="color:inherit;text-decoration:none;display:block">
+        <h3>{svc.title}</h3>
+        <p>{svc.tagline}</p>
+        <span class="svc-tag">{svc.stats[0].num} {svc.stats[0].label}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<section aria-labelledby="cities-title">
+  <span class="section-label">Города</span>
+  <h2 id="cities-title" class="section-title">Работаем в {regionCities.length === 1 ? 'городе' : `${regionCities.length} городах`} {region.nameGenitive}</h2>
+  <div class="cities">
+    {regionCities.map((c: any) => (
+      <a href={`/gorod/${c.slug}/`} class="city">
+        <span class="city-dot"></span>
+        {c.name}
+      </a>
+    ))}
+  </div>
+</section>
+
+{regionFaq.length > 0 && (
+<section aria-labelledby="faq-title">
+  <span class="section-label">Вопросы и ответы</span>
+  <h2 id="faq-title" class="section-title">Вопросы о работе НМА в {region.namePrepositional}</h2>
+  <div class="faq">
+    {regionFaq.map((f: any) => (
+      <details class="qa">
+        <summary>{f.q}</summary>
+        <div class="qa-body">{f.a}</div>
+      </details>
+    ))}
+  </div>
+</section>
+)}
+
+<section id="contact" aria-labelledby="contact-title">
+  <span class="section-label">Контакты</span>
+  <h2 id="contact-title" class="section-title">Работаем в {region.namePrepositional}</h2>
+  <div class="contact-card">
+    <h3>{company.name} · {region.nameFull}</h3>
+    <div class="contact-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+      <div><a href={`tel:${company.phoneTel}`}>{company.phoneDisplay}</a><small>Круглосуточно</small></div>
+    </div>
+    <div class="contact-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <div><a href={`mailto:${company.email}`}>{company.email}</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+</BaseLayout>

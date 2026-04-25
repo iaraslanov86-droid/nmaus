@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroBackdrop from '../components/HeroBackdrop.astro';
+import company from '../data/company.json';
+import services from '../data/services.json';
+
+const popularServices = Object.values(services as Record<string, any>).slice(0, 6);
+---
+<BaseLayout
+  title={`Страница не найдена — ${company.name}`}
+  description="Запрашиваемая страница не найдена. Вернитесь на главную или выберите услугу."
+  canonical={`${company.site}/404/`}
+  noindex={true}
+>
+
+<main class="nf">
+
+<section class="nf-hero">
+  <HeroBackdrop />
+
+  <div class="nf-status">
+    <span class="nf-status-pulse" aria-hidden="true"><span class="nf-status-dot"></span></span>
+    <span>Страница не найдена · код 404</span>
+  </div>
+
+  <div class="nf-code">404</div>
+
+  <h1 class="nf-title">Кажется, это <em>тупик</em></h1>
+  <p class="nf-sub">
+    Возможно, ссылка устарела или страница была перемещена. Но НМА всегда на связи —
+    звоните или выберите нужный раздел ниже.
+  </p>
+
+  <div class="cta-group nf-cta">
+    <a href="/" class="btn btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
+      На главную
+    </a>
+    <a href={`tel:${company.phoneTel}`} class="btn btn-secondary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+      {company.phoneDisplay}
+    </a>
+  </div>
+</section>
+
+<section class="nf-quick" aria-labelledby="nf-quick-title">
+  <h2 id="nf-quick-title" class="section-title" style="font-size:20px;margin-bottom:14px">Популярные разделы</h2>
+  <div class="nf-grid">
+    <a href="/about/" class="nf-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <div><h3>О компании</h3><p>Реквизиты, СРО, лицензии, ЭТЛ</p></div>
+    </a>
+    <a href="/komi/" class="nf-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div><h3>Республика&nbsp;Коми</h3><p>9 городов · все виды работ</p></div>
+    </a>
+    <a href="/nao/" class="nf-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div><h3>НАО</h3><p>Нарьян-Мар · арктические объекты</p></div>
+    </a>
+    <a href="/#contact" class="nf-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+      <div><h3>Контакты</h3><p>Телефон, email, адреса</p></div>
+    </a>
+  </div>
+</section>
+
+<section class="nf-services" aria-labelledby="nf-svc-title">
+  <h2 id="nf-svc-title" class="section-title" style="font-size:20px;margin-bottom:14px">Услуги, которые ищут чаще всего</h2>
+  <div class="services">
+    {popularServices.map((svc: any) => (
+      <a href={`/uslugi/${svc.slug}/`} class="svc" style="color:inherit;text-decoration:none;display:block">
+        <h3>{svc.title}</h3>
+        <p>{svc.tagline}</p>
+        <span class="svc-tag">Подробнее →</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+</main>
+
+
+<style>
+.nf{padding:0 16px 40px;max-width:1100px;margin:0 auto}
+.nf-hero{
+  position:relative;text-align:center;
+  padding:36px 16px 28px;overflow:hidden;
+  border-radius:24px;margin-bottom:28px;
+}
+.nf-hero > *:not(.hero-backdrop){position:relative;z-index:1}
+
+.nf-status{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:7px 14px 7px 11px;border-radius:100px;
+  background:linear-gradient(135deg,rgba(240,114,0,.14),rgba(240,114,0,.04));
+  border:1px solid rgba(240,114,0,.30);
+  font-size:12px;font-weight:600;color:var(--accent);
+  letter-spacing:.04em;text-transform:uppercase;
+  margin-bottom:18px;
+}
+.nf-status-pulse{position:relative;width:8px;height:8px;flex:0 0 auto}
+.nf-status-dot{
+  position:absolute;inset:0;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 0 rgba(240,114,0,.55);
+  animation:nfPulse 2s ease-out infinite;
+}
+@keyframes nfPulse{
+  0%{box-shadow:0 0 0 0 rgba(240,114,0,.55)}
+  70%{box-shadow:0 0 0 8px rgba(240,114,0,0)}
+  100%{box-shadow:0 0 0 0 rgba(240,114,0,0)}
+}
+
+.nf-code{
+  font-size:clamp(96px,28vw,180px);
+  font-weight:900;line-height:.9;letter-spacing:-.04em;
+  background:linear-gradient(135deg,var(--accent) 0%,#ffaa55 40%,var(--accent-2) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  filter:drop-shadow(0 8px 32px rgba(240,114,0,.20));
+  margin-bottom:8px;
+}
+
+.nf-title{
+  font-size:clamp(24px,6vw,34px);font-weight:800;letter-spacing:-.02em;
+  margin:0 0 12px;
+  background:linear-gradient(180deg,#fff 0%,#a5b0c9 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+.nf-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--accent),#ffaa55);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nf-sub{
+  color:var(--text-dim);font-size:15px;line-height:1.55;
+  max-width:520px;margin:0 auto 22px;
+}
+
+.nf-cta{display:grid;gap:10px;max-width:480px;margin:0 auto}
+.nf-cta .btn{white-space:nowrap}
+@media (min-width:520px){.nf-cta{grid-template-columns:1fr 1fr}}
+
+.nf-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:32px}
+@media (min-width:600px){.nf-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:900px){.nf-grid{grid-template-columns:repeat(4,1fr)}}
+.nf-card{
+  display:flex;align-items:center;gap:12px;
+  padding:16px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text);transition:transform .2s,border-color .2s,background .2s;
+}
+.nf-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(240,114,0,.35);
+  background:var(--surface-2);
+}
+.nf-card svg{
+  width:36px;height:36px;color:var(--accent);flex:0 0 auto;
+  padding:8px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(240,114,0,.12),rgba(30,101,212,.08));
+  border:1px solid rgba(240,114,0,.20);
+  box-sizing:content-box;
+}
+.nf-card h3{font-size:14px;font-weight:700;margin:0 0 3px}
+.nf-card p{font-size:12px;color:var(--text-mute);margin:0;line-height:1.4}
+
+.nf-services{margin-top:24px}
+</style>
+
+</BaseLayout>
