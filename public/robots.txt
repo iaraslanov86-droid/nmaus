@@ -8,31 +8,4 @@ Crawl-delay: 1
 User-agent: bingbot
 Allow: /
 
-# AI-поисковики — разрешаем (Perplexity, ChatGPT, Claude.ai и др.)
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-# Остальные
-User-agent: *
-Allow: /
-Crawl-delay: 2
-
 Sitemap: https://nmaus.ru/sitemap-index.xml
