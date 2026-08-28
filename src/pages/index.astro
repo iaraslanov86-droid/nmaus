@@ -46,9 +46,10 @@ const jsonLd = {
       aggregateRating: {
         '@type': 'AggregateRating',
         ratingValue: company.rating.value,
-        reviewCount: company.rating.count,
+        ratingCount: company.rating.count,
         bestRating: '5', worstRating: '1'
-      }
+      },
+      sameAs: Object.values(company.social).filter(Boolean)
     },
     {
       '@type': 'WebSite',

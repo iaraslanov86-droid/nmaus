@@ -1,9 +1,11 @@
-User-agent: Googlebot
+User-agent: *
 Allow: /
 
-User-agent: Yandexbot
+User-agent: Yandex
 Allow: /
-Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
 
 User-agent: bingbot
 Allow: /

@@ -25,8 +25,9 @@
   "kpp": "504701001",
   "founded": "2011",
   "rating": {
-    "value": "4.9",
-    "count": "94"
+    "value": "4.5",
+    "count": "39",
+    "source": "https://yandex.ru/maps/org/193485923670/"
   },
   "license": {
     "mchs": "Л014-00101-50/04678717",
@@ -64,12 +65,13 @@
       "maxVoltage": "до 35 кВ"
     }
   ],
+  "metrikaId": "112049973",
   "verification": {
     "yandex": "",
     "google": ""
   },
   "social": {
-    "facebook": "",
-    "twitter": ""
+    "yandexMaps": "https://yandex.ru/maps/org/193485923670/",
+    "vk": "https://vk.com/public176226849"
   }
 }
