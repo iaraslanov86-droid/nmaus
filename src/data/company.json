@@ -65,6 +65,13 @@
       "maxVoltage": "до 35 кВ"
     }
   ],
+  "hours": {
+    "display": "Пн–Пт 8:00–17:00",
+    "spec": [
+      { "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "12:00" },
+      { "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "17:00" }
+    ]
+  },
   "metrikaId": "112049973",
   "verification": {
     "yandex": "",
