@@ -9,10 +9,10 @@
   "whatsapp": "78214452052",
   "email": "info@nmaus.ru",
   "legalAddress": {
-    "postalCode": "141402",
+    "postalCode": "141590",
     "addressRegion": "Московская обл.",
-    "addressLocality": "г. Химки",
-    "streetAddress": "ш. Вашутинское, д. 17, пом. 101А"
+    "addressLocality": "г.о. Химки, г. Химки",
+    "streetAddress": "Вашутинское шоссе, д. 17, пом. 101А"
   },
   "workAddress": {
     "postalCode": "169710",

@@ -22,6 +22,8 @@ export async function getStaticPaths() {
 const { region, service } = Astro.props;
 const canonical = `${company.site}/${region.slug}/${service.slug}/`;
 const regionCities = region.cities.map((c: string) => cities[c]).filter(Boolean);
+// В регионе с одним городом страница услуги дублирует городскую — каноническая городская
+const canonicalHref = regionCities.length === 1 ? `${canonical}${regionCities[0].slug}/` : canonical;
 
 const replace = (s: string) => (s || '')
   .replaceAll('{city}', `${region.namePrepositional}`)
@@ -93,7 +95,7 @@ const jsonLd = {
 <BaseLayout
   title={`${service.title} в ${region.namePrepositional} — ${company.name}`}
   description={`${service.title} в ${region.namePrepositional}: ${service.shortDescription} СРО, лицензия МЧС, опыт с ${company.founded} года.`}
-  canonical={canonical}
+  canonical={canonicalHref}
   geo={{ region: region.iso }}
   jsonLd={jsonLd}
 >
