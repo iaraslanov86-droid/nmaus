@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TrebsaCase from '../components/TrebsaCase.astro';
 import company from '../data/company.json';
+import { organization } from '../data/organization';
 import services from '../data/services.json';
 import regions from '../data/regions.json';
 import cities from '../data/cities.json';
@@ -11,46 +12,7 @@ const canonical = `${company.site}/`;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${company.site}/#org`,
-      name: company.legalName,
-      alternateName: company.name,
-      url: `${company.site}/`,
-      telephone: company.phone,
-      email: company.email,
-      foundingDate: company.founded,
-      address: { '@type': 'PostalAddress', ...company.legalAddress },
-      location: { '@type': 'PostalAddress', ...company.workAddress },
-      identifier: [
-        { '@type': 'PropertyValue', name: 'ИНН', value: company.inn },
-        { '@type': 'PropertyValue', name: 'ОГРН', value: company.ogrn },
-        { '@type': 'PropertyValue', name: 'КПП', value: company.kpp }
-      ],
-      contactPoint: [
-        {
-          '@type': 'ContactPoint',
-          telephone: company.phone,
-          contactType: 'customer service',
-          areaServed: 'RU',
-          availableLanguage: 'ru',
-          hoursAvailable: company.hours.spec.map(h => ({ '@type': 'OpeningHoursSpecification', ...h }))
-        }
-      ],
-      areaServed: Object.values(regions).map(r => ({ '@type': 'AdministrativeArea', name: r.nameFull })),
-      hasCredential: [
-        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'СРО строительство', name: company.sro.construction.name, identifier: company.sro.construction.number },
-        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'СРО проектирование', name: company.sro.design.name, identifier: company.sro.design.number },
-        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Лицензия МЧС', identifier: company.license.mchs }
-      ],
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: company.rating.value,
-        ratingCount: company.rating.count,
-        bestRating: '5', worstRating: '1'
-      },
-      sameAs: Object.values(company.social).filter(Boolean)
-    },
+    organization,
     {
       '@type': 'WebSite',
       '@id': `${company.site}/#site`,
@@ -63,11 +25,11 @@ const jsonLd = {
     {
       '@type': 'FAQPage',
       mainEntity: [
-        { '@type': 'Question', name: 'С какого года работает НМА и какой у вас опыт?', acceptedAnswer: { '@type': 'Answer', text: `ООО «НефтеМонтажАвтоматика» работает с 2011 года. За 14 лет выполнены объекты для Башнефть-Полюс, ННК-Северная нефть, ЛУКОЙЛ, Транснефть, Зарубежнефть в Республике Коми и НАО. Построено более 250 км ВЛ, сдано 30+ подстанций.` } },
+        { '@type': 'Question', name: 'С какого года работает НМА и какой у вас опыт?', acceptedAnswer: { '@type': 'Answer', text: `ООО «НефтеМонтажАвтоматика» работает с 2011 года. С момента основания выполнены объекты для Башнефть-Полюс, ННК-Северная нефть, ЛУКОЙЛ, Транснефть, Зарубежнефть в Республике Коми и НАО. Построено более 250 км ВЛ, сдано 30+ подстанций.` } },
         { '@type': 'Question', name: 'В каких регионах работает НМА?', acceptedAnswer: { '@type': 'Answer', text: 'НМА специализируется на Республике Коми (9 городов: Усинск, Ухта, Сыктывкар, Воркута, Инта, Печора, Сосногорск, Емва, Микунь) и Ненецком автономном округе (Нарьян-Мар). Основная база — г. Усинск.' } },
         { '@type': 'Question', name: 'Какие лицензии и допуски есть у НМА?', acceptedAnswer: { '@type': 'Answer', text: `НМА имеет: допуск СРО на строительство (${company.sro.construction.number}), допуск СРО на проектирование (${company.sro.design.number}), лицензию МЧС (${company.license.mchs}), аккредитованную электролабораторию до 35 кВ (Ростехнадзор).` } },
         { '@type': 'Question', name: 'Выполняете ли вы работы под ключ?', acceptedAnswer: { '@type': 'Answer', text: 'Да, НМА — подрядчик полного цикла: проектирование, поставка оборудования, строительство, монтаж, пусконаладка (ПНР), испытания ЭТЛ, сдача Ростехнадзору. Один договор, один ответственный.' } },
-        { '@type': 'Question', name: 'Как получить коммерческое предложение?', acceptedAnswer: { '@type': 'Answer', text: `Позвоните ${company.phoneDisplay} или напишите на ${company.email}. Инженер выезжает на объект в течение 24–48 часов. КП готовим в течение 3–5 рабочих дней после получения ТЗ.` } }
+        { '@type': 'Question', name: 'Как получить коммерческое предложение?', acceptedAnswer: { '@type': 'Answer', text: `Позвоните ${company.phoneDisplay} или напишите на ${company.email}. Передайте техническое задание или проектную документацию. Срок подготовки КП и выезда согласуем после изучения задачи.` } }
       ]
     }
   ]
@@ -90,7 +52,7 @@ const clients = [
 ];
 
 const metrics = [
-  { num: '14 лет', label: 'на рынке нефтегаза' },
+  { num: 'С 2011', label: 'на рынке нефтегаза' },
   { num: '250+ км', label: 'ВЛ построено' },
   { num: '30+', label: 'подстанций сдано' },
   { num: '9', label: 'видов работ' },
@@ -139,7 +101,7 @@ const iconSvg: Record<string, string> = {
 
   <div class="hero-status">
     <span class="hero-status-pulse" aria-hidden="true"><span class="hero-status-dot"></span></span>
-    <span class="hero-status-text">Принимаем заявки · инженер выезжает в течение 24–48 часов</span>
+    <span class="hero-status-text">Принимаем технические задания на строительство и монтаж</span>
   </div>
 
   <div class="hero-badge">
@@ -156,7 +118,7 @@ const iconSvg: Record<string, string> = {
   </p>
 
   <div class="hero-meta">
-    <div class="hero-meta-item"><span class="hero-meta-num">14</span><span class="hero-meta-label">лет<br/>опыта</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-num">2011</span><span class="hero-meta-label">год<br/>основания</span></div>
     <div class="hero-meta-divider" aria-hidden="true"></div>
     <div class="hero-meta-item"><span class="hero-meta-num">250<small>+</small></span><span class="hero-meta-label">км ВЛ<br/>построено</span></div>
     <div class="hero-meta-divider" aria-hidden="true"></div>
@@ -176,7 +138,7 @@ const iconSvg: Record<string, string> = {
     <a href={`tel:${company.phoneTel}`} class="btn btn-primary btn-cta-live">
       <span class="btn-pulse" aria-hidden="true"><span class="btn-pulse-dot"></span></span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
-      <span class="btn-cta-text"><span class="btn-cta-num">{company.phoneDisplay}</span><span class="btn-cta-hint">Звоните — отвечаем сразу</span></span>
+      <span class="btn-cta-text"><span class="btn-cta-num">{company.phoneDisplay}</span><span class="btn-cta-hint">Обсудить проект по телефону</span></span>
     </a>
     <a href={`mailto:${company.email}`} class="btn btn-secondary">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
@@ -252,7 +214,7 @@ const iconSvg: Record<string, string> = {
 
 <!-- CITIES -->
 <section aria-labelledby="cities-title">
-  <span class="section-label">Города присутствия</span>
+  <span class="section-label">География выезда</span>
   <h2 id="cities-title" class="section-title">Работаем по всему Северу</h2>
   <p class="section-sub">Выберите свой город — получите информацию о наших услугах с учётом местной промышленной специфики.</p>
   <div class="cities">
@@ -302,7 +264,7 @@ const iconSvg: Record<string, string> = {
         <div class="feat-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
-        <h3>14 лет опыта на нефтегазе</h3>
+        <h3>Опыт в нефтегазе с 2011 года</h3>
       </div>
       <p>С 2011 года выполнили объекты для Башнефть-Полюс, ННК, ЛУКОЙЛ, Транснефть, Зарубежнефть в Коми и НАО.</p>
     </div>
@@ -314,12 +276,12 @@ const iconSvg: Record<string, string> = {
   <span class="section-label">Вопросы и ответы</span>
   <h2 id="faq-title" class="section-title">Частые вопросы о НМА</h2>
   <div class="faq">
-    <details class="qa"><summary>С какого года работает НМА и какой у вас опыт?</summary><div class="qa-body">ООО «НефтеМонтажАвтоматика» работает с 2011 года. За 14 лет выполнены объекты для Башнефть-Полюс, ННК-Северная нефть, ЛУКОЙЛ, Транснефть, Зарубежнефть в Республике Коми и НАО. Построено более 250 км ВЛ, сдано 30+ подстанций.</div></details>
+    <details class="qa"><summary>С какого года работает НМА и какой у вас опыт?</summary><div class="qa-body">ООО «НефтеМонтажАвтоматика» работает с 2011 года. С момента основания выполнены объекты для Башнефть-Полюс, ННК-Северная нефть, ЛУКОЙЛ, Транснефть, Зарубежнефть в Республике Коми и НАО. Построено более 250 км ВЛ, сдано 30+ подстанций.</div></details>
     <details class="qa"><summary>В каких регионах работает НМА?</summary><div class="qa-body">НМА специализируется на Республике Коми (9 городов: Усинск, Ухта, Сыктывкар, Воркута, Инта, Печора, Сосногорск, Емва, Микунь) и Ненецком автономном округе (Нарьян-Мар). Основная база — г. Усинск.</div></details>
     <details class="qa"><summary>Какие лицензии и допуски есть у НМА?</summary><div class="qa-body">НМА имеет: допуск СРО на строительство (СРО-С-246-13062012), допуск СРО на проектирование (СРО-П-174-01102012), лицензию МЧС на монтаж ОПС (Л014-00101-50/04678717), аккредитованную электролабораторию до 35 кВ (Ростехнадзор).</div></details>
     <details class="qa"><summary>Выполняете ли вы работы «под ключ»?</summary><div class="qa-body">Да, НМА — подрядчик полного цикла: проектирование, поставка оборудования, строительство, монтаж, пусконаладка (ПНР), испытания ЭТЛ, сдача Ростехнадзору. Один договор, один ответственный.</div></details>
     <details class="qa"><summary>Работаете ли на удалённых месторождениях вахтовым методом?</summary><div class="qa-body">Да, вахтовый метод — основной формат работы на промыслах. Организуем логистику, проживание, питание и ротацию персонала. Работали на объектах в 300+ км от ближайшего населённого пункта.</div></details>
-    <details class="qa"><summary>Как получить коммерческое предложение?</summary><div class="qa-body">Позвоните по номеру {company.phoneDisplay} или напишите на {company.email}. Инженер выезжает на объект для осмотра в течение 24–48 часов. КП готовим в течение 3–5 рабочих дней после получения ТЗ.</div></details>
+    <details class="qa"><summary>Как получить коммерческое предложение?</summary><div class="qa-body">Позвоните по номеру {company.phoneDisplay} или напишите на {company.email}. Передайте техническое задание или проектную документацию. Срок подготовки КП и выезда согласуем после изучения задачи.</div></details>
   </div>
 </section>
 

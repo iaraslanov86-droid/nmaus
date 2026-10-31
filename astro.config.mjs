@@ -15,9 +15,8 @@ export default defineConfig({
   compressHTML: true,
   integrations: [
     sitemap({
-      filter: (page) => !singleCityRegions.some(slug => new RegExp(`^https://nmaus\\.ru/${slug}/[^/]+/$`).test(page)),
-      changefreq: 'weekly',
-      lastmod: new Date(),
+      // Add lastmod only when a real content update date is tracked.
+      filter: (url) => !/\/404(?:\.html|\/)?$/.test(url) && !singleCityRegions.some(slug => new RegExp(`^https://nmaus\\.ru/${slug}/[^/]+/$`).test(url)),
       serialize(item) {
         const u = item.url;
         const depth = (u.replace('https://nmaus.ru/', '').match(/\//g) || []).length;

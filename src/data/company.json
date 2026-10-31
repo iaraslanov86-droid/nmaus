@@ -10,25 +10,22 @@
   "email": "info@nmaus.ru",
   "legalAddress": {
     "postalCode": "141590",
-    "addressRegion": "Московская обл.",
-    "addressLocality": "г.о. Химки, г. Химки",
-    "streetAddress": "Вашутинское шоссе, д. 17, пом. 101А"
+    "addressRegion": "Московская область, г.о. Химки",
+    "addressLocality": "г. Химки",
+    "streetAddress": "Вашутинское шоссе, д. 17, пом. 101А",
+    "addressCountry": "RU"
   },
   "workAddress": {
-    "postalCode": "169710",
+    "postalCode": "169711",
     "addressRegion": "Республика Коми",
     "addressLocality": "г. Усинск",
-    "streetAddress": "ул. Парковая, 15, оф. 76/77"
+    "streetAddress": "ул. Парковая, д. 15",
+    "addressCountry": "RU"
   },
   "inn": "1106028181",
   "ogrn": "1111106001588",
   "kpp": "504701001",
   "founded": "2011",
-  "rating": {
-    "value": "4.5",
-    "count": "39",
-    "source": "https://yandex.ru/maps/org/193485923670/"
-  },
   "license": {
     "mchs": "Л014-00101-50/04678717",
     "mchsDate": "31.03.2026",
@@ -68,8 +65,28 @@
   "hours": {
     "display": "Пн–Пт 8:00–17:00",
     "spec": [
-      { "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "12:00" },
-      { "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "17:00" }
+      {
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "12:00"
+      },
+      {
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "13:00",
+        "closes": "17:00"
+      }
     ]
   },
   "metrikaId": "112049973",
@@ -80,5 +97,18 @@
   "social": {
     "yandexMaps": "https://yandex.ru/maps/org/193485923670/",
     "vk": "https://vk.com/public176226849"
+  },
+  "postalAddress": {
+    "postalCode": "169710",
+    "addressRegion": "Республика Коми",
+    "addressLocality": "г. Усинск",
+    "postOfficeBoxNumber": "248",
+    "addressCountry": "RU"
+  },
+  "productionAddress": {
+    "addressRegion": "Республика Коми",
+    "addressLocality": "г. Усинск, пгт. Парма",
+    "streetAddress": "ул. Аэродромная, д. 11а",
+    "addressCountry": "RU"
   }
 }

@@ -3,24 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroBackdrop from '../../components/HeroBackdrop.astro';
 import TrebsaCase from '../../components/TrebsaCase.astro';
 import company from '../../data/company.json';
+import { organization } from '../../data/organization';
 import services from '../../data/services.json';
 import regions from '../../data/regions.json';
 
 const canonical = `${company.site}/about/`;
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': `${company.site}/#org`,
-  name: company.legalName,
-  alternateName: company.name,
-  url: `${company.site}/`,
-  telephone: company.phone,
-  email: company.email,
-  foundingDate: company.founded,
-  address: { '@type': 'PostalAddress', ...company.legalAddress },
-  areaServed: Object.values(regions).map(r => ({ '@type': 'AdministrativeArea', name: r.nameFull }))
-};
+const jsonLd = { '@context': 'https://schema.org', ...organization };
 
 const serviceList = Object.values(services);
 ---
@@ -49,7 +38,7 @@ const serviceList = Object.values(services);
 
 <div class="stats">
   <div class="stat"><div class="stat-num">2011</div><div class="stat-label">год основания</div></div>
-  <div class="stat"><div class="stat-num">14+</div><div class="stat-label">лет в нефтегазе</div></div>
+  <div class="stat"><div class="stat-num">С 2011</div><div class="stat-label">работаем в нефтегазе</div></div>
   <div class="stat"><div class="stat-num">9</div><div class="stat-label">видов работ</div></div>
 </div>
 
@@ -79,7 +68,11 @@ const serviceList = Object.values(services);
         <strong>Юридический:</strong><br/>
         {company.legalAddress.postalCode}, {company.legalAddress.addressRegion}, {company.legalAddress.addressLocality}, {company.legalAddress.streetAddress}<br/><br/>
         <strong>Фактический:</strong><br/>
-        {company.workAddress.postalCode}, {company.workAddress.addressRegion}, {company.workAddress.addressLocality}, {company.workAddress.streetAddress}
+        {company.workAddress.postalCode}, {company.workAddress.addressRegion}, {company.workAddress.addressLocality}, {company.workAddress.streetAddress}<br/><br/>
+        <strong>Почтовый:</strong><br/>
+        {company.postalAddress.postalCode}, {company.postalAddress.addressRegion}, {company.postalAddress.addressLocality}, а. я. {company.postalAddress.postOfficeBoxNumber}<br/><br/>
+        <strong>Производственная база:</strong><br/>
+        {company.productionAddress.addressRegion}, {company.productionAddress.addressLocality}, {company.productionAddress.streetAddress}
       </p>
     </div>
     <div class="feat">

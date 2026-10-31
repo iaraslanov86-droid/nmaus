@@ -7,7 +7,7 @@
   --border-strong:rgba(255,255,255,0.14);
   --text:#e8ecf4;
   --text-dim:#8b93a7;
-  --text-mute:#5c6579;
+  --text-mute:#939db2;
   --accent:#f07200;
   --accent-2:#1e65d4;
   --accent-3:#e8c840;
@@ -649,3 +649,8 @@ footer.site-footer p{margin-bottom:4px}
   }
 }
 
+
+.mobile-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;padding:8px 12px 10px;font-size:12px;border-top:1px solid var(--border)}
+.mobile-nav a{color:var(--text-dim)}
+.footer-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;margin:14px 0}
+@media(min-width:900px){.mobile-nav{display:none}.topbar-nav{gap:16px}}

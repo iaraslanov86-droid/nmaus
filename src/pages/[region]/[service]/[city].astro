@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import HeroBackdrop from '../../../components/HeroBackdrop.astro';
 import company from '../../../data/company.json';
+import { organization } from '../../../data/organization';
 import regions from '../../../data/regions.json';
 import cities from '../../../data/cities.json';
 import services from '../../../data/services.json';
@@ -63,54 +64,20 @@ const heroIcon = service.heroIcon || 'badge';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${company.site}/#org`,
-      name: company.legalName,
-      url: `${company.site}/`,
-      telephone: company.phone,
-      email: company.email,
-      address: { '@type': 'PostalAddress', ...company.legalAddress }
-    },
-    {
-      '@type': 'LocalBusiness',
-      '@id': `${canonical}#business`,
-      name: `${service.title} ${company.name} в ${city.namePrepositional}`,
-      url: canonical,
-      telephone: company.phone,
-      email: company.email,
-      priceRange: '₽₽',
-      parentOrganization: { '@id': `${company.site}/#org` },
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: city.name,
-        addressRegion: region.nameFull,
-        addressCountry: 'RU'
-      },
-      geo: { '@type': 'GeoCoordinates', latitude: city.coords[0], longitude: city.coords[1] },
-      areaServed: [
-        { '@type': 'City', name: city.name },
-        { '@type': 'AdministrativeArea', name: region.nameFull }
-      ],
-      openingHoursSpecification: company.hours.spec.map(h => ({ '@type': 'OpeningHoursSpecification', ...h })),
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: company.rating.value,
-        ratingCount: company.rating.count,
-        bestRating: '5', worstRating: '1'
-      },
-      sameAs: Object.values(company.social).filter(Boolean)
-    },
+    organization,
+
     {
       '@type': 'Service',
       '@id': `${canonical}#service`,
       serviceType: service.schemaServiceType || service.title,
-      provider: { '@id': `${canonical}#business` },
+      provider: { '@id': `${company.site}/#org` },
       areaServed: [
         { '@type': 'City', name: city.name },
         { '@type': 'AdministrativeArea', name: region.nameFull }
       ],
-      description: service.shortDescription
+      description: service.shortDescription,
+      name: `${service.title} в ${city.namePrepositional}`,
+      url: canonical
     },
     {
       '@type': 'BreadcrumbList',
@@ -138,7 +105,7 @@ const jsonLd = {
   description={pageDescription}
   keywords={keywords}
   canonical={canonical}
-  geo={{ region: region.iso, placename: `${city.name}, ${region.nameFull}`, lat: city.coords[0], lon: city.coords[1] }}
+  geo={{ region: region.iso, placename: `${city.name}, ${region.nameFull}` }}
   jsonLd={jsonLd}
 >
 
@@ -235,9 +202,9 @@ const jsonLd = {
 
 {city.localClients && city.localClients.length > 0 && (
   <section aria-labelledby="local-clients-title">
-    <span class="section-label">Заказчики в {city.namePrepositional}</span>
+    <span class="section-label">Промышленность региона</span>
     <h2 id="local-clients-title" class="section-title">Крупные операторы в {city.namePrepositional}</h2>
-    <p class="section-sub">Нефтегазовые компании и промышленные предприятия {city.nameGenitive} — потенциальные и фактические заказчики НМА.</p>
+    <p class="section-sub">Нефтегазовые компании и промышленные предприятия {city.nameGenitive} — предприятия, для которых могут быть востребованы наши направления работ.</p>
     <div class="local-clients">
       {city.localClients.map((c: string) => (
         <div class="local-client">
@@ -311,6 +278,7 @@ const jsonLd = {
 <section id="request" aria-labelledby="contact-title">
   <span class="section-label">Контакты</span>
   <h2 id="contact-title" class="section-title">{replace(service.contactTitle)}</h2>
+  <p class="section-sub">Работы в {city.namePrepositional} организуем с выездом из Усинска. Эта страница описывает территорию обслуживания. <a href="/contacts/">Адреса и реквизиты НМА</a>.</p>
   <div class="contact-card">
     <h3>{company.name} · {city.name}</h3>
     <div class="contact-item">

@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import HeroBackdrop from '../../../components/HeroBackdrop.astro';
 import company from '../../../data/company.json';
+import { organization } from '../../../data/organization';
 import regions from '../../../data/regions.json';
 import cities from '../../../data/cities.json';
 import services from '../../../data/services.json';
@@ -26,6 +27,7 @@ const allCitiesWithRegion = regionsList.flatMap((r: any) =>
 const replace = (s: string) => (s || '')
   .replaceAll('{city}', 'вашем городе')
   .replaceAll('{cityName}', 'вашем городе')
+  .replaceAll('{cityGen}', 'вашего города')
   .replaceAll('{region}', 'Коми и НАО')
   .replaceAll('{regionName}', 'Коми и НАО')
   .replaceAll('{regionGen}', 'Коми и НАО')
@@ -60,15 +62,7 @@ const featureIcons = [
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${company.site}/#org`,
-      name: company.legalName,
-      url: `${company.site}/`,
-      telephone: company.phone,
-      email: company.email,
-      address: { '@type': 'PostalAddress', ...company.legalAddress }
-    },
+    organization,
     {
       '@type': 'Service',
       '@id': `${canonical}#service`,
@@ -102,6 +96,8 @@ const jsonLd = {
 
 <nav class="crumbs" aria-label="Хлебные крошки">
   <a href="/">Главная</a>
+  <span class="sep">›</span>
+  <a href="/uslugi/">Услуги</a>
   <span class="sep">›</span>
   <span aria-current="page">{service.title}</span>
 </nav>
@@ -140,7 +136,7 @@ const jsonLd = {
 <section aria-labelledby="regions-title">
   <span class="section-label">По регионам</span>
   <h2 id="regions-title" class="section-title">{service.title} по регионам</h2>
-  <p class="section-sub">Выберите регион — получите страницу с подробным описанием услуги и городами присутствия.</p>
+  <p class="section-sub">Выберите регион — получите страницу с подробным описанием услуги и городами выезда.</p>
   <div class="services">
     {regionsList.map(r => (
       <a href={`/${r.slug}/${service.slug}/`} class="svc" style="color:inherit;text-decoration:none;display:block">
@@ -154,8 +150,8 @@ const jsonLd = {
 
 <section aria-labelledby="what-title">
   <span class="section-label">{service.title}</span>
-  <h2 id="what-title" class="section-title">{service.whatTitle}</h2>
-  <p class="section-sub">{service.whatSub}</p>
+  <h2 id="what-title" class="section-title">{replace(service.whatTitle)}</h2>
+  <p class="section-sub">{replace(service.whatSub)}</p>
   <div class="services">
     {service.items.map((item: any) => (
       <article class="svc">
@@ -172,8 +168,8 @@ const jsonLd = {
 
 <section aria-labelledby="how-title">
   <span class="section-label">Процесс</span>
-  <h2 id="how-title" class="section-title">{service.howTitle}</h2>
-  <p class="section-sub">{service.howSub}</p>
+  <h2 id="how-title" class="section-title">{replace(service.howTitle)}</h2>
+  <p class="section-sub">{replace(service.howSub)}</p>
   <div class="timeline">
     {service.process.map((step: any, i: number) => (
       <div class="step">
@@ -187,7 +183,7 @@ const jsonLd = {
 
 <section aria-labelledby="result-title">
   <span class="section-label">Результат</span>
-  <h2 id="result-title" class="section-title">{service.resultTitle}</h2>
+  <h2 id="result-title" class="section-title">{replace(service.resultTitle)}</h2>
   <div class="results">
     {service.results.map((r: any) => (
       <div class="result-row">
@@ -201,7 +197,7 @@ const jsonLd = {
 <section aria-labelledby="cities-title">
   <span class="section-label">Города</span>
   <h2 id="cities-title" class="section-title">{service.title} в 10 городах Коми и НАО</h2>
-  <p class="section-sub">Выберите свой город — получите страницу с подробным описанием работ, ценами и контактами.</p>
+  <p class="section-sub">Выберите свой город — получите страницу с подробным описанием работ, условиями расчёта стоимости и контактами.</p>
   <div class="cities">
     {allCitiesWithRegion.map(({ city, region: r }: any) => (
       <a href={`/${r.slug}/${service.slug}/${city.slug}/`} class="city">

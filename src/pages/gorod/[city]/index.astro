@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import HeroBackdrop from '../../../components/HeroBackdrop.astro';
 import company from '../../../data/company.json';
+import { organization } from '../../../data/organization';
 import regions from '../../../data/regions.json';
 import cities from '../../../data/cities.json';
 import services from '../../../data/services.json';
@@ -20,35 +21,19 @@ const serviceList = Object.values(services as Record<string, any>);
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
+    organization,
     {
-      '@type': 'Organization',
-      '@id': `${company.site}/#org`,
-      name: company.legalName,
-      url: `${company.site}/`,
-      telephone: company.phone,
-      email: company.email
-    },
-    {
-      '@type': 'LocalBusiness',
-      '@id': `${canonical}#business`,
-      name: `${company.name} — ${city.name}`,
+      '@type': 'Service',
+      '@id': `${canonical}#service`,
+      name: `Строительство и монтаж в ${city.namePrepositional}`,
       url: canonical,
-      telephone: company.phone,
-      email: company.email,
-      priceRange: '₽₽',
-      parentOrganization: { '@id': `${company.site}/#org` },
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: city.name,
-        addressRegion: region.nameFull,
-        addressCountry: 'RU'
-      },
-      geo: { '@type': 'GeoCoordinates', latitude: city.coords[0], longitude: city.coords[1] },
-      areaServed: [
-        { '@type': 'City', name: city.name },
-        { '@type': 'AdministrativeArea', name: region.nameFull }
-      ],
-      openingHoursSpecification: company.hours.spec.map(h => ({ '@type': 'OpeningHoursSpecification', ...h }))
+      provider: { '@id': `${company.site}/#org` },
+      areaServed: { '@type': 'City', name: city.name, containedInPlace: { '@type': 'AdministrativeArea', name: region.nameFull } },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Направления работ НМА',
+        itemListElement: serviceList.map(service => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: service.title, url: `${company.site}/${region.slug}/${service.slug}/${city.slug}/` } }))
+      }
     },
     {
       '@type': 'BreadcrumbList',
@@ -66,7 +51,7 @@ const jsonLd = {
   title={`${company.name} в ${city.namePrepositional} — строительство объектов нефтегаза`}
   description={`${company.legalName} в ${city.namePrepositional}: строительство ВЛ и ЛЭП, РУ и ПС, нефтепроводов, АСУТП, ПНР, электрообогрев, изоляция, ОПС. ${city.heroNote || ''}`}
   canonical={canonical}
-  geo={{ region: region.iso, placename: `${city.name}, ${region.nameFull}`, lat: city.coords[0], lon: city.coords[1] }}
+  geo={{ region: region.iso, placename: `${city.name}, ${region.nameFull}` }}
   jsonLd={jsonLd}
 >
 
@@ -147,6 +132,7 @@ const jsonLd = {
 <section id="contact" aria-labelledby="contact-title">
   <span class="section-label">Контакты</span>
   <h2 id="contact-title" class="section-title">{company.name} в {city.namePrepositional}</h2>
+  <p class="section-sub">Работы в {city.namePrepositional} организуем с выездом из Усинска. Эта страница описывает территорию обслуживания. <a href="/contacts/">Адреса и реквизиты НМА</a>.</p>
   <div class="contact-card">
     <h3>{company.name} · {city.name}</h3>
     <div class="contact-item">

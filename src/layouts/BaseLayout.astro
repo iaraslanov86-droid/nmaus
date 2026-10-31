@@ -27,11 +27,11 @@ const {
   geo,
   jsonLd,
   publishedTime,
-  modifiedTime = new Date().toISOString()
+  modifiedTime
 } = Astro.props;
 
 const robotsContent = noindex
-  ? 'noindex,nofollow'
+  ? 'noindex,follow'
   : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
 ---
 <!doctype html>
@@ -84,7 +84,7 @@ const robotsContent = noindex
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content={title} />
   {publishedTime && <meta property="article:published_time" content={publishedTime} />}
-  <meta property="article:modified_time" content={modifiedTime} />
+  {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
   <meta property="article:author" content={company.legalName} />
 
   <meta name="twitter:card" content="summary_large_image" />
@@ -92,7 +92,7 @@ const robotsContent = noindex
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
 
-  {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
 </head>
 <body>
   <header class="topbar">
@@ -132,6 +132,7 @@ const robotsContent = noindex
           <a href="/about/" class="topbar-link">О&nbsp;компании</a>
           <a href="/komi/" class="topbar-link">Республика&nbsp;Коми</a>
           <a href="/nao/" class="topbar-link">НАО</a>
+          <a href="/contacts/" class="topbar-link">Контакты</a>
         </nav>
 
         <div class="topbar-right">
@@ -144,13 +145,14 @@ const robotsContent = noindex
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
             <span class="cta-text">
               <span class="cta-num">{company.phoneDisplay}</span>
-              <span class="cta-hint">Позвонить · бесплатно</span>
+              <span class="cta-hint">Обсудить проект</span>
             </span>
           </a>
         </div>
       </div>
     </div>
 
+    <nav class="mobile-nav" aria-label="Навигация на мобильных устройствах"><a href="/uslugi/">Услуги</a><a href="/komi/">Коми</a><a href="/nao/">НАО</a><a href="/about/">О компании</a><a href="/contacts/">Контакты</a></nav>
     <div class="topbar-line" aria-hidden="true"></div>
   </header>
 
@@ -160,9 +162,12 @@ const robotsContent = noindex
     <p><strong>{company.legalName}</strong> — Строительство ВЛ/ЛЭП, энергоцентров, РУ и ПС, нефтепроводов, АСУТП, ПНР и ШМР, электрообогрев, изоляция, ОПС (лицензия МЧС).</p>
     <p>Фактический адрес: {company.workAddress.postalCode}, {company.workAddress.addressRegion}, {company.workAddress.addressLocality}, {company.workAddress.streetAddress}</p>
     <p>Юр. адрес: {company.legalAddress.postalCode}, {company.legalAddress.addressRegion}, {company.legalAddress.addressLocality}, {company.legalAddress.streetAddress}</p>
+    <p>Почтовый адрес: {company.postalAddress.postalCode}, {company.postalAddress.addressRegion}, {company.postalAddress.addressLocality}, а. я. {company.postalAddress.postOfficeBoxNumber}</p>
+    <p>Производственная база: {company.productionAddress.addressRegion}, {company.productionAddress.addressLocality}, {company.productionAddress.streetAddress}</p>
+    <nav class="footer-nav" aria-label="Разделы сайта"><a href="/uslugi/">Услуги</a><a href="/contacts/">Контакты</a><a href="/komi/">Республика Коми</a><a href="/nao/">НАО</a></nav>
     <p style="margin-top:10px">
       <a href="/about/" style="color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(0,212,255,0.35)">О компании</a>
-      &nbsp;·&nbsp; ИНН {company.inn} &nbsp;·&nbsp; ОГРН {company.ogrn} &nbsp;·&nbsp; работаем с {company.founded} года
+      <br/>ИНН {company.inn}<br/>ОГРН {company.ogrn}<br/>КПП {company.kpp}<br/>Работаем с {company.founded} года
     </p>
     <p style="margin-top:6px">
       СРО строительство: {company.sro.construction.number} &nbsp;·&nbsp;
@@ -209,6 +214,22 @@ const robotsContent = noindex
           trackLinks: true,
           accurateTrackBounce: true
         });
+
+        document.addEventListener('click', function(event) {
+          const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+          if (!link || typeof window.ym !== 'function') return;
+          const href = link.getAttribute('href') || '';
+          let goal;
+          if (/^tel:/i.test(href)) goal = 'contact_phone';
+          else if (/^mailto:/i.test(href)) goal = 'contact_email';
+          else {
+            try {
+              const target = new URL(href, location.href);
+              if (target.protocol === 'https:' && target.hostname === 'wa.me') goal = 'contact_whatsapp';
+            } catch (_) { return; }
+          }
+          if (goal) window.ym(Number(metrikaId), 'reachGoal', goal);
+        }, { passive: true });
       </script>
       <noscript><div><img src={`https://mc.yandex.ru/watch/${company.metrikaId}`} style="position:absolute;left:-9999px" alt="" /></div></noscript>
     </>

@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroBackdrop from '../../components/HeroBackdrop.astro';
 import company from '../../data/company.json';
+import { organization } from '../../data/organization';
 import regions from '../../data/regions.json';
 import services from '../../data/services.json';
 
@@ -12,28 +13,7 @@ const regionsList = Object.values(regions) as any[];
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${company.site}/#org`,
-      name: company.legalName,
-      alternateName: company.name,
-      url: `${company.site}/`,
-      telephone: company.phone,
-      email: company.email,
-      foundingDate: company.founded,
-      address: { '@type': 'PostalAddress', ...company.legalAddress },
-      location: { '@type': 'PostalAddress', ...company.workAddress },
-      identifier: [
-        { '@type': 'PropertyValue', name: 'ИНН', value: company.inn },
-        { '@type': 'PropertyValue', name: 'ОГРН', value: company.ogrn }
-      ],
-      hasCredential: [
-        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'СРО строительство', name: company.sro.construction.name, identifier: company.sro.construction.number },
-        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'СРО проектирование', name: company.sro.design.name, identifier: company.sro.design.number },
-        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Лицензия МЧС', identifier: company.license.mchs }
-      ],
-      contactPoint: { '@type': 'ContactPoint', telephone: company.phone, contactType: 'customer service', areaServed: 'RU', availableLanguage: 'ru' }
-    },
+    organization,
     {
       '@type': 'BreadcrumbList',
       itemListElement: [

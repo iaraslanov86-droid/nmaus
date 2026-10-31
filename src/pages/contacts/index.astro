@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import company from '../../data/company.json';
+import regions from '../../data/regions.json';
+import { organization } from '../../data/organization';
+
+const canonical = `${company.site}/contacts/`;
+const addresses = [
+  { title: 'Фактический адрес — офис', value: `${company.workAddress.postalCode}, ${company.workAddress.addressRegion}, ${company.workAddress.addressLocality}, ${company.workAddress.streetAddress}` },
+  { title: 'Почтовый адрес — для корреспонденции', value: `${company.postalAddress.postalCode}, ${company.postalAddress.addressRegion}, ${company.postalAddress.addressLocality}, а. я. ${company.postalAddress.postOfficeBoxNumber}` },
+  { title: 'Юридический адрес', value: `${company.legalAddress.postalCode}, ${company.legalAddress.addressRegion}, ${company.legalAddress.addressLocality}, ${company.legalAddress.streetAddress}` },
+  { title: 'Производственная база', value: `${company.productionAddress.addressRegion}, ${company.productionAddress.addressLocality}, ${company.productionAddress.streetAddress}` }
+];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [organization, {
+    '@type': 'ContactPage', '@id': `${canonical}#page`, url: canonical,
+    name: 'Контакты НМА', mainEntity: { '@id': organization['@id'] }
+  }, {
+    '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Главная', item: `${company.site}/` },
+      { '@type': 'ListItem', position: 2, name: 'Контакты', item: canonical }
+    ]
+  }]
+};
+---
+<BaseLayout title="Контакты НМА — телефон, адреса в Усинске и Химках" description="Контакты ООО «НефтеМонтажАвтоматика»: телефон, электронная почта, офис в Усинске, юридический и почтовый адреса, производственная база в Парме. Работы в Коми и НАО." canonical={canonical} jsonLd={jsonLd}>
+  <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span class="sep">›</span><span aria-current="page">Контакты</span></nav>
+  <main>
+    <section class="hero" aria-labelledby="contact-title">
+      <div class="hero-badge">Связаться с НМА</div>
+      <h1 id="contact-title">Контакты <em>НефтеМонтажАвтоматики</em></h1>
+      <p class="hero-sub">Обсудим строительство, монтаж, автоматизацию и пусконаладку на объектах Республики Коми и Ненецкого автономного округа.</p>
+      <p class="section-sub">{company.hours.display}; перерыв 12:00–13:00.</p>
+      <div class="cta-group"><a href={`tel:${company.phoneTel}`} class="btn btn-primary">{company.phoneDisplay}</a><a href={`mailto:${company.email}`} class="btn btn-secondary">{company.email}</a></div>
+    </section>
+    <section aria-labelledby="addresses-title">
+      <span class="section-label">Адреса</span>
+      <h2 id="addresses-title" class="section-title">Офис, корреспонденция и производственная база</h2>
+      <p class="section-sub">Перед визитом или доставкой оборудования свяжитесь с нами по телефону и согласуйте место встречи.</p>
+      <div class="features">{addresses.map(address => <article class="feat"><h3>{address.title}</h3><p>{address.value}</p></article>)}</div>
+    </section>
+    <section aria-labelledby="geography-title">
+      <span class="section-label">Территория работ</span>
+      <h2 id="geography-title" class="section-title">Республика Коми и НАО</h2>
+      <p class="section-sub">Организуем выезд бригад на промышленные объекты. Города в разделе географии обозначают территории обслуживания; условия мобилизации, доставки и сроки согласуем по конкретному проекту.</p>
+      <div class="cities">{Object.values(regions).map(region => <a class="city" href={`/${region.slug}/`}>{region.nameFull}</a>)}</div>
+    </section>
+    <section aria-labelledby="request-title">
+      <h2 id="request-title" class="section-title">Что направить для расчёта</h2>
+      <p class="section-sub">Пришлите на {company.email} техническое задание или проектную документацию, расположение объекта, перечень и объём работ, требования к срокам. После изучения материалов согласуем необходимые уточнения и срок подготовки предложения.</p>
+      <div class="contact-card"><h3>{company.legalName}</h3><p>ИНН: {company.inn}</p><p>КПП: {company.kpp}</p><p>ОГРН: {company.ogrn}</p><p><a href="/about/">Сведения о компании, СРО и лицензиях</a></p><p><a href={company.social.yandexMaps}>НМА в Яндекс Картах</a></p><p><a href={company.social.vk}>НМА ВКонтакте</a></p></div>
+    </section>
+  </main>
+</BaseLayout>

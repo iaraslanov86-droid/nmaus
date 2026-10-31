@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import HeroBackdrop from '../../../components/HeroBackdrop.astro';
 import company from '../../../data/company.json';
+import { organization } from '../../../data/organization';
 import regions from '../../../data/regions.json';
 import cities from '../../../data/cities.json';
 import services from '../../../data/services.json';
@@ -27,7 +28,8 @@ const canonicalHref = regionCities.length === 1 ? `${canonical}${regionCities[0]
 
 const replace = (s: string) => (s || '')
   .replaceAll('{city}', `${region.namePrepositional}`)
-  .replaceAll('{cityName}', region.name)
+  .replaceAll('{cityName}', region.namePrepositional)
+  .replaceAll('{cityGen}', region.nameGenitive)
   .replaceAll('{region}', region.namePrepositional)
   .replaceAll('{regionName}', region.name)
   .replaceAll('{regionGen}', region.nameGenitive)
@@ -55,14 +57,7 @@ const iconSvg: Record<string, string> = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${company.site}/#org`,
-      name: company.legalName,
-      url: `${company.site}/`,
-      telephone: company.phone,
-      email: company.email
-    },
+    organization,
     {
       '@type': 'Service',
       '@id': `${canonical}#service`,

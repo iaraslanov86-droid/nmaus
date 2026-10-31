@@ -1,13 +1,4 @@
 User-agent: *
 Allow: /
 
-User-agent: Yandex
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: bingbot
-Allow: /
-
 Sitemap: https://nmaus.ru/sitemap-index.xml
