@@ -15,6 +15,7 @@ export default defineConfig({
   compressHTML: true,
   integrations: [
     sitemap({
+      customPages: ["https://nmaus.ru/rabota/"],
       // Add lastmod only when a real content update date is tracked.
       filter: (url) => !/\/404(?:\.html|\/)?$/.test(url) && !singleCityRegions.some(slug => new RegExp(`^https://nmaus\\.ru/${slug}/[^/]+/$`).test(url)),
       serialize(item) {
