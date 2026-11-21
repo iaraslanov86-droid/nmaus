@@ -15,7 +15,7 @@ export default defineConfig({
   compressHTML: true,
   integrations: [
     sitemap({
-      customPages: ["https://nmaus.ru/rabota/"],
+      customPages: ["https://nmaus.ru/rabota/", "https://nmaus.ru/rabota/elektromontazhnik-3/", "https://nmaus.ru/rabota/elektromontazhnik-4/", "https://nmaus.ru/rabota/elektromontazhnik-5/", "https://nmaus.ru/rabota/elektromontazhnik-6/", "https://nmaus.ru/rabota/podsobny-rabochiy/", "https://nmaus.ru/rabota/montazhnik-kipia/", "https://nmaus.ru/rabota/slesar-kipia/", "https://nmaus.ru/rabota/master-emr/", "https://nmaus.ru/rabota/inzhener-emr/", "https://nmaus.ru/rabota/nachalnik-uchastka/"],
       // Add lastmod only when a real content update date is tracked.
       filter: (url) => !/\/404(?:\.html|\/)?$/.test(url) && !singleCityRegions.some(slug => new RegExp(`^https://nmaus\\.ru/${slug}/[^/]+/$`).test(url)),
       serialize(item) {
